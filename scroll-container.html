@@ -1,0 +1,51 @@
+<template>
+  <style>
+    :host {
+      overflow: hidden;
+    }
+  </style>
+
+  <div class="scroll-wrapper">
+    <div class="scroll-content">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<webox-scroll-container></webox-scroll-container>
+
+<script>
+  customElements.define(
+    'webox-scroll-container',
+    class extends HTMLElement {
+      constructor() {
+        super()
+        this.attachShadow({ mode: 'open' })
+        this.shadowRoot.appendChild(template.content)
+        this.init()
+      }
+
+      init() {
+        const tabs = []
+        const children = this.shadowRoot.children
+
+        for (const elem of children) {
+          if (elem.getAttribute('part')) {
+            tabs.push(elem)
+          }
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', (e) => {
+            tabs.forEach((tab) => {
+              tab.part = 'tab'
+            })
+            e.target.part = 'tab active'
+          })
+
+          console.log(tab.part)
+        })
+      }
+    }
+  )
+</script>
