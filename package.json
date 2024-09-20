@@ -1,0 +1,73 @@
+{
+  "name": "my-apps",
+  "private": true,
+  "version": "4.1.0",
+  "dependencies": {
+    "@babel/runtime": "^7.22.6",
+    "@tiny/cookie": "workspace:^",
+    "@tiny/dragmove": "workspace:^",
+    "@tiny/events": "workspace:^",
+    "@tiny/querystring": "workspace:^",
+    "@tiny/utils": "workspace:^",
+    "esbuild": "latest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/eslint-parser": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
+    "@types/node": "^16.18.39",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "babel-plugin-import": "latest",
+    "concurrently": "latest",
+    "cross-env": "^7.0.3",
+    "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-import-resolver-alias": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-jest": "latest",
+    "eslint-plugin-jsx-a11y": "latest",
+    "eslint-plugin-prettier": "latest",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "prettier": "latest",
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write",
+      "git add"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/codefresh/my-apps.git"
+  },
+  "scripts": {
+    "dev:layouts": "pnpm -F layouts dev",
+    "build:dragmove": "pnpm -F @tiny/dragmove build",
+    "build:delegate": "pnpm -F @tiny/delegate build",
+    "build:events": "pnpm -F @tiny/events build",
+    "build:utils": "pnpm -F \"@tiny/*\" build",
+    "lint": "eslint packages @tiny",
+    "test": "jest"
+  },
+  "useWorkspaces": true,
+  "workspaces": [
+    "packages/*",
+    "@tiny/*",
+    "tools/*"
+  ]
+}

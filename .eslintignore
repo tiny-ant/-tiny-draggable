@@ -1,0 +1,12 @@
+mock/
+build/
+dist/
+es/
+lib/
+release/
+./script
+coverage/
+node_modules/
+public/
+bin/
+iconfont.js

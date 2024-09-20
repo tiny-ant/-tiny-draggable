@@ -1,0 +1,91 @@
+.resize-handle {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  border: 1px solid currentColor;
+  /* box-sizing: content-box; */
+  color: dodgerblue;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.resize-point {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: auto;
+  box-sizing: content-box;
+  border: 1px solid currentColor;
+  background-color: dodgerblue;
+  pointer-events: all;
+}
+
+.resize-l {
+  top: 0;
+  left: -2px;
+  bottom: 0;
+  height: 10px;
+  cursor: ew-resize;
+}
+.resize-r {
+  top: 0;
+  right: -2px;
+  bottom: 0;
+  height: 10px;
+  cursor: ew-resize;
+}
+.resize-t {
+  top: -2px;
+  left: 0;
+  right: 0;
+  width: 10px;
+  cursor: ns-resize;
+}
+.resize-b {
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  width: 10px;
+  cursor: ns-resize;
+}
+.resize-bl,
+.resize-tr,
+.resize-br,
+.resize-tl {
+  border: none;
+  width: 9px;
+  height: 9px;
+  color: dodgerblue;
+  background-color: transparent;
+}
+.resize-tl {
+  top: -2px;
+  left: -2px;
+  border-top: 3px solid currentColor;
+  border-left: 3px solid currentColor;
+  cursor: nw-resize;
+}
+.resize-br {
+  bottom: -2px;
+  right: -2px;
+  border-bottom: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+  cursor: se-resize;
+}
+.resize-tr {
+  top: -2px;
+  right: -2px;
+  border-top: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+  cursor: ne-resize;
+}
+.resize-bl {
+  bottom: -2px;
+  left: -2px;
+  border-bottom: 3px solid currentColor;
+  border-left: 3px solid currentColor;
+  cursor: sw-resize;
+}

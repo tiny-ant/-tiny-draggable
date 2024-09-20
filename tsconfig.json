@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "typeRoots": ["./typings", "@types"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": false,
+    "forceConsistentCasingInFileNames": true,
+    // see https://cn.vitejs.dev/guide/features.html
+    "isolatedModules": true,
+    // 编译的目标语言版本
+    "target": "ESNext",
+    // 模块规范
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    // Generate .d.ts files
+    "declaration": true,
+    /**
+     * Only emit .d.ts files; do not emit .js files.
+     * This setting is useful in two cases:
+     * You are using a transpiler other than TypeScript to generate your JavaScript.
+     * You are using TypeScript to only generate d.ts files for your consumers.
+     */
+    "emitDeclarationOnly": true,
+    // omit `import react` declaration to use JSX
+    "jsx": "react-jsx",
+    /**
+     * Do not emit compiler output files like JavaScript source code, source-maps or declarations.
+     * This makes room for another tool like Babel, or swc to handle converting the TypeScript file to a file which can run inside a JavaScript environment.
+     * You can then use TypeScript as a tool for providing editor integration, and as a source code type-checker.
+     */
+    "noEmit": false,
+    // 类型定义文件生成的目标目录(这里要指定一个任意目录，否则编译开启allowJs的情况下将覆盖文件本身报错)
+    "outDir": "types",
+    "resolveJsonModule": true,
+    /* 跳过对node_modules中的库的类型检查 */
+    "skipLibCheck": true,
+    "strict": true,
+  },
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}

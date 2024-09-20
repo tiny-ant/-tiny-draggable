@@ -1,0 +1,259 @@
+/*
+著作权归作者所有。
+商业转载请联系作者获得授权，非商业转载请注明出处。
+作者：一丝
+链接：http://www.zhihu.com/question/21093147/answer/17158909
+来源：知乎
+
+在 CSS Mobile Text Size Adjustment Module Level 1 规范中，text-size-adjust 的取值如下：
+取值：auto | none | <percentage(百分比)>
+默认值：auto（iPad 默认值是 none[1]）
+继承性：有
+
+该属性最先是由 iOS 1.0 引入的，所以本来就是解决移动设备上的问题而出现的。
+通常 iPhone（iOS4）横屏时，「-webkit-text-size- adjust」 的值约为140%。
+所以如果想取消 iOS 设备横屏切换时候字号变大，正确的用法应该是：
+「-webkit-text-size-adjust:100%;」
+*/
+
+/* 注意rem单位相对是html元素的，不是body的！ */
+/*
+PC: 1rem=12px, Safari: 1rem=10px
+虽然如此，但body元素1.6rem的字体大小计算值均为16px
+在这种情况下，em单位的跨平台一致性优势就体现出来了
+
+16px是一个比较好的取值
+1/16=0.0625是一个精确值，但1/12是无限循环。
+*/
+
+html {
+  /* font-size: 14px; */
+  font-size: 100%;
+}
+
+/*=============== Media Queries ===============*/
+
+/* 宽度小于临界值 and (-webkit-max-device-pixel-ratio: 2) */
+/*@media screen and (max-width: 320px) {
+	body {
+		font-size: 1.4rem;
+	}
+}*/
+
+/* 宽度大于临界值, devicePixelRatio <= 2 and (-webkit-max-device-pixel-ratio: 2) */
+/*@media screen and (min-width: 320px) {
+	body {
+		font-size: 1.6rem;
+	}
+}*/
+
+/*=============== Resets ===============*/
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Helvetica Neue', Helvetica, 'Microsoft YaHei UI', SimSun, 'Segoe UI', Tahoma, Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*line-height: $baseLineHeight;	/* important ! 消除不同中英文字体默认行高差距 */
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
+/*重置margin
+1. 大多数情况下我们会自定义，或者去除
+2. 扩大元素适用范围，以更好支持语义化和SEO
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /*line-height:1.2;*/
+  margin: 0;
+  font-weight: 600;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  /*-apple-text-size-adjust: none;*/
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: 'liga', 'kern';
+  font-feature-settings: 'liga', 'kern';
+}
+
+input,
+textarea,
+keygen,
+select,
+button {
+  font-size: 100%;
+}
+
+a,
+div,
+span,
+img,
+input,
+button,
+textarea {
+  /*outline: 0;*/ /* useful for keyboard navigating */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* safari input有margin?，PC端无，统一 */
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+/* Prevent a focus outline appearing on elements that should only be given focus via Javascript.*/
+*[tabindex='-1'] {
+  outline: none;
+}
+
+body,
+p,
+dd,
+form {
+  margin: 0;
+}
+
+address,
+blockquote,
+fieldset,
+figure,
+hr,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  padding: 0.35em 0.625em 0.75em;
+}
+
+ul,
+ol {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+img {
+  vertical-align: top; /* 移除图片基线对齐产生的间隙（告别baseline, 取用其他属性值都是可以的） */
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+}
+
+hr {
+  height: 0;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+/* font-weight: 500 在一般PC上几乎不会有加粗效果，在设备像素比较高的移动设备上有一定程度加粗 */
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #bbb;
+  font-weight: 500;
+  user-select: none;
+}
+
+input {
+  vertical-align: middle;
+  box-sizing: border-box; /* 统一化（浏览器默认值有差异，如type=search） */
+  /*line-height: inherit;*/
+}
+
+input[type='text'],
+input[type='search'],
+input[type='date'],
+input[type='time'],
+input[type='email'],
+input[type='tel'] {
+  -webkit-appearance: none; /* 清除iOS下input表单内阴影，但不能设置radio，checkbox，否则元素将隐藏 */
+}
+
+label input[type='radio'],
+label input[type='checkbox'] {
+  vertical-align: -1px;
+  margin-right: 0.5rem;
+}
+
+code {
+  background-color: #f7f7f9;
+  border: 0.99px solid #e1e1e8;
+  color: #0088cc;
+  padding: 2px 4px;
+}
+code,
+pre {
+  color: #333333;
+  font-family: Menlo, Monaco, 'Courier New', monospace;
+  font-size: 12px;
+  padding: 0 3px 2px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+/* https://css-tricks.com/focus-styles-non-interactive-elements/ */
+h1:focus,
+h2:focus,
+h3:focus,
+h4:focus,
+h5:focus,
+h6:focus,
+input:focus,
+canvas:focus {
+  outline: 0;
+}
+
+/* 为不同语言指定引号的表现 */
+:lang(en) > q {
+  quotes: '"' '"';
+}
+:lang(ch) > q {
+  quotes: '“' '”';
+}
+
+/* 在q标签的前后插入引号 */
+q:before {
+  content: open-quote;
+}
+q:after {
+  content: close-quote;
+}

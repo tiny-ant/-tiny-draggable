@@ -1,0 +1,257 @@
+
+/* 对齐 */
+
+.tal {
+  text-align: left;
+}
+.tac {
+  text-align: center;
+}
+.tar {
+  text-align: right;
+}
+
+.vat {
+  vertical-align: top;
+}
+.vam {
+  vertical-align: middle;
+}
+.vab {
+  vertical-align: bottom;
+}
+
+/* inline-block 垂直对齐基准元素 vam/vat/vab */
+
+.v-align:before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 100%;
+  vertical-align: middle;
+}
+
+/* 定位 */
+
+.abs-fill,
+.abs-center {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.abs-center {
+  margin: auto;
+}
+
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.fn {
+  float: none;
+}
+
+.abs {
+  position: absolute;
+}
+.rel {
+  position: relative;
+}
+.fixed {
+  position: fixed;
+}
+
+.pos-tr,
+.pos-br,
+.pos-tl,
+.pos-bl {
+  position: absolute;
+}
+
+.pos-tr {
+  top: 0;
+  right: 0;
+}
+
+.pos-br {
+  bottom: 0;
+  right: 0;
+}
+
+.pos-tl {
+  top: 0;
+  left: 0;
+}
+
+.pos-bl {
+  bottom: 0;
+  left: 0;
+}
+
+/* 块类型 */
+
+.hide, .hidden {
+  display: none;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
+.ib {
+  display: inline-block;
+}
+
+.ovh {
+  overflow: hidden;
+}
+.ova {
+  overflow: auto;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.bdbox {
+  box-sizing: border-box;
+}
+
+.pointer-none {
+  pointer-events: none;
+}
+
+.sel-none {
+  user-select: none;
+}
+
+.fb {
+  font-weight: bold;
+}
+
+.bd-none {
+  border: none;
+}
+
+.bd-collapsed {
+  border-collapse: collapse;
+}
+
+.bordered {
+  border: 0.99px solid #ddd;
+}
+.dashed {
+  border-style: 0.99px dashed #ddd;
+}
+
+.radius {
+  border-radius: 4px;
+} /* 圆角边框（表格、按钮、标签等） */
+.round {
+  border-radius: 9999px;
+} /* 椭圆边框（按钮、标签） */
+
+.fit {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.wfull {
+  width: 100%;
+}
+
+.disabled {
+  color: #999 !important;
+  pointer-events: none;
+}
+
+.btn-disable {
+  color: #999 !important;
+  cursor: not-allowed;
+}
+
+/* 文本溢出省略 */
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.clearfix {
+  zoom: 1;
+
+  &:before,
+  &:after {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.fade {
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.2s linear, opacity 0.2s linear;
+}
+
+.fade.in {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bg-light {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.bg-lighter {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.bg-dark {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-darker {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+a, b {
+	color: red;
+
+	/* "&" comes first */
+	& c, & d {
+		color: white;
+	}
+
+	/* "&" comes later, requiring "@nest" */
+	@nest e & {
+		color: yellow;
+	}
+}
+

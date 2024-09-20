@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100;
+        }
+
+        .full {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            background: #000;
+        }
+
+        .newUserHome_text__D2XWC {
+            position: relative;
+            margin: auto;
+            word-spacing: .2em;
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            color: transparent;
+            background-color: #2c2c2c;
+            -webkit-background-clip: text;
+            font-family: Finlandica, sans-serif;
+        }
+
+        .newUserHome_text__D2XWC:after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            background-image: linear-gradient(120deg, transparent, transparent 6rem, #fff 11rem, transparent 11.15rem, transparent 15rem, hsla(0, 0%, 100%, .3) 20rem, transparent 25rem, transparent 27rem, hsla(0, 0%, 100%, .6) 32rem, #fff 33rem, hsla(0, 0%, 100%, .3) 33.15rem, transparent 38rem, transparent 40rem, hsla(0, 0%, 100%, .3) 45rem, transparent 50rem, transparent);
+            -webkit-background-clip: text;
+            background-size: 150% 100%;
+            background-repeat: no-repeat;
+            animation: newUserHome_shine__1LS-d 5s linear infinite forwards;
+        }
+
+
+        @keyframes newUserHome_shine__1LS-d {
+            0% {
+                background-position: 50% 0
+            }
+
+            to {
+                background-position: -190% 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="full">
+        <p title="彩蛋" class="newUserHome_text__D2XWC" data-text="M1907 x 云加速" style="font-size: 5rem;">M1907 x 云加速 </p>
+    </div>
+    <script>
+        class P {
+            #items = 0;
+
+            name = 'P';
+
+            constructor(v) {
+                console.log(#items in this); // 注意不是字符串！
+                this.#items = v;
+            }
+            change() {
+                this.#items = this.#items === 0 ? 'A' : String.fromCharCode(1 + this.#items.charCodeAt(0))
+            }
+            init() {
+                // var desc = Object.getOwnPropertyDescriptor(this, #items); // 访问不了
+                // console.log(desc);
+                const descs = Object.getOwnPropertyDescriptors(p);
+                console.log(descs); // 没有私有属性
+            }
+            static getItems(obj) {
+                if (#items in obj) {
+                    return obj.#items;
+                }
+                return "obj must be an instance of P";
+            }
+        }
+
+        const p = new P('E');
+
+        // var a = p.#items + 'OF'; // throw SyntaxError
+
+        var a = p['#items'];
+        // console.log('a = ', a);
+        //
+        p.init();
+
+        P.getItems(p);
+        // console.log(P.getItems({})); // "obj must be an instance of P"
+
+        function make() {
+            const c = new P('D');
+            // console.log('A' + c.#items) // throw SyntaxError
+            // return c.#items; // throw SyntaxError
+        }
+    </script>
+</body>
+
+</html>

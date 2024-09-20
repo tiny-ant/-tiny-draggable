@@ -1,0 +1,36 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.DS_Store
+node_modules
+coverage
+dist
+www
+# release
+*.zip
+*.lock
+package-lock.json
+yarn.lock.json
+pnpm-lock.yaml
+
+# Log files
+*.log*
+
+# local env files
+.env.local
+.env.*.local
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# umi
+.umi
+.umi-production
+
+# monorepo build files
+@tiny/**/es
+@tiny/**/lib

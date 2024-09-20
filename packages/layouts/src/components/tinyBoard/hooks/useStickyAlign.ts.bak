@@ -1,0 +1,440 @@
+
+import { useCallback } from 'react'
+import { ifXRangeCoincide, ifYRangeCoincide, isBetween } from '../util'
+import { InstanceRef, LayoutRect, PluginHooks } from '../types'
+
+const toGridValue = (value: number, unit = 10): number => {
+  return Math.round(value / unit) * unit
+}
+
+
+export default function useGridAlign<T>(_: InstanceRef<T>, hooks: PluginHooks<T>) {
+  // TODO: 横向线、竖向线全部提取，然后排序
+
+    function getTopRuler(rect: LayoutRect, rects: LayoutRect[]) {
+      let hitTop;
+
+      [
+        // 顶边对齐 (同侧)
+        r => isBetween(r.top - rect.top, -7, +7),
+        // 底边对齐 (对侧)
+        r => isBetween(rect.top - r.top - r.height, -7, +7) && ifXRangeCoincide(r, rect),
+      ]
+        .find((filter, index) => {
+          const result = rects.find(filter);
+
+          if (result) {
+            hitTop = {
+              rect: result,
+              hit: ['top', 'bottom', 'bottom'][index],
+            };
+            // console.log('hitTop: ', index, `(${result.left}, ${result.top})`)
+            return true;
+          }
+          return false;
+        });
+
+      if (hitTop == undefined && this.hitTop.hit) {
+        this.$refs.rulerx.classList.remove('assist-top');
+      } else if (hitTop && this.hitTop.hit == undefined) {
+        this.$refs.rulerx.removeAttribute('hidden');
+        this.$refs.rulerx.classList.add('assist-top');
+      }
+
+      this.hitTop = hitTop || {};
+
+      return (hitTop !== undefined);
+    },
+
+    getBottomRuler(rect, rects) {
+      let hitBottom;
+
+      [
+        // 底边对齐(同侧)
+        r => isBetween(r.bottom - rect.bottom, -7, +7),
+        // 顶边对齐 (对侧)
+        r => (r.left < rect.right && rect.left < r.right) && isBetween(r.top - rect.bottom, -7, +7),
+      ]
+        .find((filter, index) => {
+          const result = rects.find(filter);
+
+          if (result) {
+            hitBottom = {
+              rect: result,
+              hit: ['bottom', 'top', 'top'][index],
+            };
+            // console.log('hitBottom: ', index, `(${result.left}, ${result.top})`)
+            return true;
+          }
+          return false;
+        });
+
+      if (hitBottom == undefined && this.hitBottom.hit) {
+        this.$refs.rulerx.classList.remove('assist-bottom');
+      } else if (hitBottom && this.hitBottom.hit == undefined) {
+        this.$refs.rulerx.removeAttribute('hidden');
+        this.$refs.rulerx.classList.add('assist-bottom');
+      }
+
+      this.hitBottom = hitBottom || {};
+
+      return (hitBottom !== undefined);
+    },
+
+    getLeftRuler(rect, rects) {
+      let hitLeft;
+
+      [
+        // 左边对齐 (同侧)
+        r => isBetween(r.left - rect.left, -7, +7),
+        // 右边对齐 (对侧)
+        r => (r.top < rect.bottom && rect.top < r.bottom) && isBetween(rect.left - r.right, -7, +7),
+      ]
+        .find((filter, index) => {
+          const result = rects.find(filter);
+
+          if (result) {
+            hitLeft = {
+              rect: result,
+              hit: ['left', 'right', 'right'][index],
+            };
+            // console.log('hitLeft: ', index, `(${result.left}, ${result.top})`);
+            return true;
+          }
+          return false;
+        });
+
+      if (hitLeft == undefined && this.hitLeft.hit) {
+        this.$refs.rulery.classList.remove('assist-left');
+      } else if (hitLeft && this.hitLeft.hit == undefined) {
+        this.$refs.rulery.removeAttribute('hidden');
+        this.$refs.rulery.classList.add('assist-left');
+      }
+
+      this.hitLeft = hitLeft || {};
+
+      return (hitLeft !== undefined);
+    },
+
+    getRightRuler(rect, rects) {
+      let hitRight;
+
+      [
+        // 右边对齐 (同侧)
+        r => isBetween(r.right - rect.right, -7, +7),
+        // 左边对齐 (对侧)
+        r => (r.top < rect.bottom && rect.top < r.bottom) && isBetween(r.left - rect.right, -7, +7),
+      ]
+        .some((filter, index) => {
+          const result = rects.find(filter);
+
+          if (result) {
+            hitRight = {
+              rect: result,
+              hit: ['right', 'left', 'left'][index],
+            };
+            // console.log('hitRight: ', index, `(${result.left}, ${result.top})`)
+            return true;
+          }
+          return false;
+        });
+
+      if (hitRight == undefined && this.hitRight.hit) {
+        this.$refs.rulery.classList.remove('assist-right');
+      } else if (hitRight && this.hitRight.hit == undefined) {
+        this.$refs.rulery.removeAttribute('hidden');
+        this.$refs.rulery.classList.add('assist-right');
+      }
+
+      this.hitRight = hitRight || {};
+
+      return (hitRight !== undefined);
+    },
+
+    // 寻找各边就近的对齐线
+    getRulers(rect, rects, resizerClass) {
+      const rulerx = this.$refs.rulerx;
+      const rulery = this.$refs.rulery;
+
+      switch (resizerClass) {
+        case 'resize-t':
+          this.getTopRuler(rect, rects);
+          break;
+        case 'resize-r':
+          this.getRightRuler(rect, rects);
+          break;
+        case 'resize-b':
+          this.getBottomRuler(rect, rects);
+          break;
+        case 'resize-l':
+          this.getLeftRuler(rect, rects);
+          break;
+        case 'resize-tl':
+          this.getTopRuler(rect, rects);
+          this.getLeftRuler(rect, rects);
+          break;
+        case 'resize-tr':
+          this.getTopRuler(rect, rects);
+          this.getRightRuler(rect, rects);
+          break;
+        case 'resize-bl':
+          this.getLeftRuler(rect, rects);
+          this.getBottomRuler(rect, rects);
+          break;
+        case 'resize-br':
+          this.getRightRuler(rect, rects);
+          this.getBottomRuler(rect, rects);
+          break;
+        default:
+        {
+          const hitTop = this.getTopRuler(rect, rects);
+          const hitLeft = this.getLeftRuler(rect, rects);
+          const hitRight = this.getRightRuler(rect, rects);
+          const hitBottom = this.getBottomRuler(rect, rects);
+
+          // 水平对称轴对齐
+          if (!hitTop && !hitBottom) {
+            const result = rects.find(r => isBetween(r.top + r.bottom - rect.top - rect.bottom, -7, +7));
+
+            if (result) {
+              this.hitTop = {
+                rect: result,
+                hit: 'middle',
+                offset: 0,
+              };
+              rulerx.classList.add('assist-top');
+            } else {
+              rulerx.classList.remove('assist-top');
+            }
+          }
+
+          // 垂直对称轴对齐
+          if (!hitLeft && !hitRight) {
+            const result = rects.find(r => isBetween(r.left + r.right - rect.left - rect.right, -7, +7));
+
+            if (result) {
+              this.hitLeft = {
+                rect: result,
+                hit: 'center',
+                offset: 0,
+              };
+              rulery.classList.add('assist-left');
+            } else {
+              rulery.classList.remove('assist-left');
+            }
+          }
+        }
+      }
+      this.drawRuler(rect);
+    },
+
+    /**
+     * rect 拖动目标元素的rect
+     */
+    drawRuler(rect, resizerClass) {
+      const hitLeft = this.hitLeft;
+      const hitTop = this.hitTop;
+      const hitRight = this.hitRight;
+      const hitBottom = this.hitBottom;
+
+      const rectLeft = hitLeft.rect;
+      const rectTop = hitTop.rect;
+      const rectRight = hitRight.rect;
+      const rectBottom = hitBottom.rect;
+
+      const rulerx = this.$refs.rulerx;
+      const rulery = this.$refs.rulery;
+
+      const stretch = 20;
+      let leftVal = 0;
+      let topVal = 0;
+      let left;
+      let top;
+      let height;
+      let width;
+
+      if (hitLeft.hit) {
+        topVal = Math.min(rectLeft.top, rect.top) - stretch;
+        height = `${Math.max(rectLeft.bottom, rect.bottom) + stretch - topVal}px`;
+        top = `${topVal}px`;
+
+        if (hitLeft.hit === 'left') {
+          leftVal = rectLeft.left;
+        } else if (hitLeft.hit === 'right') {
+          leftVal = rectLeft.right;
+        } else /*if (hitLeft.hit === 'center') */{
+          leftVal = (rectLeft.left + rectLeft.right) / 2;
+        }
+        rulery.style.top = top;
+        rulery.style.height = height;
+      }
+      left = `${leftVal}px`;
+      rulery.style.left = left;
+
+      if (hitRight.hit) {
+        topVal = Math.min(rectRight.top, rect.top) - stretch;
+        height = `${Math.max(rectRight.bottom, rect.bottom) + stretch - topVal}px`;
+        top = `${topVal}px`;
+
+        if (hitRight.hit === 'right') {
+          width = `${rectRight.right - leftVal}px`;
+        } else {
+          width = `${rectRight.left - leftVal}px`;
+        }
+        rulery.style.top = top;
+        rulery.style.height = height;
+        rulery.style.width = width;
+      }
+
+      if (hitTop.hit) {
+        leftVal = Math.min(rectTop.left, rect.left) - stretch;
+        width = `${Math.max(rectTop.right, rect.right) + stretch - leftVal}px`;
+        left = `${leftVal}px`;
+
+        if (hitTop.hit === 'top') {
+          topVal = rectTop.top;
+        } else if (hitTop.hit === 'bottom') {
+          topVal = rectTop.bottom;
+        } else /*if (hitTop.hit === 'middle') */{
+          topVal = (rectTop.top + rectTop.bottom) / 2;
+        }
+        rulerx.style.left = left;
+        rulerx.style.width = width;
+      }
+      top = `${topVal}px`;
+      rulerx.style.top = top;
+
+      if (hitBottom.hit) {
+        leftVal = Math.min(rectBottom.left, rect.left) - stretch;
+        width = `${Math.max(rectBottom.right, rect.right) + stretch - leftVal}px`;
+        left = `${leftVal}px`;
+
+        if (hitBottom.hit === 'bottom') {
+          height = `${rectBottom.bottom - topVal}px`;
+        } else {
+          height = `${rectBottom.top - topVal}px`;
+        }
+        rulerx.style.left = left;
+        rulerx.style.width = width;
+        rulerx.style.height = height;
+      }
+    },
+
+    alignLeft(element, elementRect) {
+      const { hit, rect } = this.hitLeft;
+
+      if (hit === 'left') {
+        element.style.marginLeft = `${rect.left * percentPerPixel}%`;
+        element.style.paddingLeft = `${(elementRect.right - rect.left) * percentPerPixel}%`;
+      } else if (hit === 'right') {
+        element.style.marginLeft = `${rect.right * percentPerPixel}%`;
+        element.style.paddingLeft = `${(elementRect.right - rect.right) * percentPerPixel}%`;
+      }
+    },
+
+    alignTop(element, elementRect) {
+      const { hit, rect } = this.hitTop;
+
+      if (hit === 'top') {
+        element.style.marginTop = `${rect.top * percentPerPixel}%`;
+        element.style.paddingTop = `${(elementRect.bottom - rect.top) * percentPerPixel}%`;
+      } else if (hit === 'bottom') {
+        element.style.marginTop = `${rect.bottom * percentPerPixel}%`;
+        element.style.paddingTop = `${(elementRect.bottom - rect.bottom) * percentPerPixel}%`;
+      }
+    },
+
+    alignRight(element, elementRect) {
+      const { hit, rect } = this.hitRight;
+
+      if (hit === 'left') {
+        element.style.paddingLeft = `${(rect.left - elementRect.left) * percentPerPixel}%`;
+      } else if (hit === 'right') {
+        element.style.paddingLeft = `${(rect.right - elementRect.left) * percentPerPixel}%`;
+      }
+    },
+
+    alignBottom(element, elementRect) {
+      const { hit, rect } = this.hitBottom;
+
+      if (hit === 'top') {
+        element.style.paddingTop = `${(rect.top - elementRect.top) * percentPerPixel}%`;
+      } else if (hit === 'bottom') {
+        element.style.paddingTop = `${(rect.bottom - elementRect.top) * percentPerPixel}%`;
+      }
+    },
+
+    alignRuler(element, elementRect, resizerClass) {
+      switch (resizerClass) {
+        case 'resize-t':
+          this.alignTop(element, elementRect);
+          break;
+        case 'resize-r':
+          this.alignRight(element, elementRect);
+          break;
+        case 'resize-b':
+          this.alignBottom(element, elementRect);
+          break;
+        case 'resize-l':
+          this.alignLeft(element, elementRect);
+          break;
+        case 'resize-tl':
+          this.alignTop(element, elementRect);
+          this.alignLeft(element, elementRect);
+          break;
+        case 'resize-tr':
+          this.alignTop(element, elementRect);
+          this.alignRight(element, elementRect);
+          break;
+        case 'resize-bl':
+          this.alignLeft(element, elementRect);
+          this.alignBottom(element, elementRect);
+          break;
+        case 'resize-br':
+          this.alignRight(element, elementRect);
+          this.alignBottom(element, elementRect);
+          break;
+        default:  // drag
+        {
+          const containerRect = this.containerRect;
+          const hitLeft = this.hitLeft;
+          const hitTop = this.hitTop;
+          const hitRight = this.hitRight;
+          const hitBottom = this.hitBottom;
+
+          const rectLeft = hitLeft.rect;
+          const rectTop = hitTop.rect;
+          const rectRight = hitRight.rect;
+          const rectBottom = hitBottom.rect;
+
+          if (hitLeft.hit === 'left') {
+            element.style.marginLeft = `${Math.min(rectLeft.left, containerRect.width - elementRect.width) * percentPerPixel}%`;
+          } else if (hitLeft.hit === 'right') {
+            element.style.marginLeft = `${Math.min(rectLeft.right, containerRect.width - elementRect.width) * percentPerPixel}%`;
+          } else if (hitLeft.hit === 'center') {
+            element.style.marginLeft = `${clamp((rectLeft.left + rectLeft.right - elementRect.width) / 2, 0, containerRect.width - elementRect.width) * percentPerPixel}%`;
+          }
+
+          if (hitRight.hit === 'right') {
+            element.style.marginLeft = `${Math.max(rectRight.right - elementRect.width, 0) * percentPerPixel}%`;
+          } else if (hitRight.hit === 'left') {
+            element.style.marginLeft = `${Math.max(rectRight.left - elementRect.width, 0) * percentPerPixel}%`;
+          }
+
+          if (hitTop.hit === 'top') {
+            element.style.marginTop = `${Math.min(rectTop.top, containerRect.height - elementRect.height) * percentPerPixel}%`;
+          } else if (hitTop.hit === 'bottom') {
+            element.style.marginTop = `${Math.min(rectTop.bottom, containerRect.height - elementRect.height) * percentPerPixel}%`;
+          } else if (hitTop.hit === 'middle') {
+            element.style.marginTop = `${clamp((rectTop.top + rectTop.bottom - elementRect.height) / 2, 0, containerRect.height - elementRect.height) * percentPerPixel}%`;
+          }
+
+          if (hitBottom.hit === 'bottom') {
+            element.style.marginTop = `${Math.max(rectBottom.bottom - elementRect.height, 0) * percentPerPixel}%`;
+          } else if (hitBottom.hit === 'top') {
+            element.style.marginTop = `${Math.max(rectBottom.top - elementRect.height, 0) * percentPerPixel}%`;
+          }
+        }
+      }
+    },
+  }

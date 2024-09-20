@@ -1,0 +1,4 @@
+button[disabled] {
+  color: #bbb;
+  border: 1px solid #ccc;
+}

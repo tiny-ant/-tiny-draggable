@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="src/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <style id="themeVars">
+      /* 解决加载界面样式问题 */
+      :root {
+        --primary-color: #3355FF;
+        --box-pad: 15px;
+        --font-size-default: 14px;
+        --font-size-small: 12px;
+        --font-size-large: 16px;
+        --font-color-warning: #ff6900;
+        --font-color-link: #3388FF;
+        --border-radius-default: 4px;
+        --font-color-base: #1a1a1a;
+        --font-color-secondary: #666;
+        --font-color-dark: #747687;
+        --font-color-disabled: #bdbdbd;
+        --font-color-reversed: #fff;
+        --border-color-default: #E0E0E0;
+        --border-color-light: rgba(0, 0, 0, 0.15);
+        --border-color-disabled: #d9d9d9;
+
+        --color-selected: #fbfcfd;
+        --bg-selected: #f1f5ff;
+
+        --bg-base: #fcfdfe;
+        --bg-secondary: #f5f7f9;
+        --bg-deep: #e9edf2;
+        --bg-layout: #f2f4fa;
+        --bg-nav: #fff;
+        --bg-chart-box: #fff;
+        --bg-popup: #fff;
+        --bg-loading-layer: rgba(255, 255, 255, 0.95);
+
+        --bg-based-box-shadow: rgba(100, 100, 100, 0.2);
+
+        --icon-color-question: #cbcfe3;
+
+      }
+    </style>
+    <script>
+      // 兼容低版本chrome (>= v71 才支持globalThis)
+      this.globalThis || (this.globalThis = this);
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Note! 使用BrowerRoute时，不能使用相对路径 -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

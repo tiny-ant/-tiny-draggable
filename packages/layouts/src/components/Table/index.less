@@ -1,0 +1,279 @@
+.x-table {
+  position: relative;
+  max-width: 100%;
+  height: 100%;
+  /** 表格计算出的宽度为单元格所占据的宽度，给表格添加外边框不应挤占宽度 **/
+  box-sizing: border-box;
+  border: 3px solid var(--border-color, #E9E9E9);
+  color: var(--text-color, #fff);
+  overflow: hidden;
+
+  &.inline {
+    display: inline-block;
+  }
+
+  scroll-container {
+    height: 100%;
+  }
+
+  .resizing,
+  &.resizing {
+    cursor: ew-resize;
+  }
+
+  &.theme-blue {
+    --text-color: #3e4a52;
+    --border-color: rgba(13, 128, 147, 0.65);
+    ---top-head-bg: #7ba3c3;
+    ---left-head-bg: #8bb2d1;
+    --row-odd-bg: #bcdbf3;
+    --row-even-bg: #d9edfe;
+    --scrollbar-thumb-color: #5f84aa;
+    --scrollbar-track-color: rgb(176 209 240 / 25%);
+    --scrollbar-track-color-active: rgb(176 209 240 / 65%);
+  }
+
+  &.theme-light-blue {
+    --text-color: #3e4a52;
+    --border-color: rgb(89 159 171 / 65%);
+    ---top-head-bg: #7ba3c36b;
+    ---left-head-bg: #8bb2d166;
+    --row-odd-bg: #bcdbf366;
+    --row-even-bg: #d9edfe61;
+    --scrollbar-thumb-color: #5f84aa;
+    --scrollbar-track-color: rgb(240 240 256 / 25%);
+    --scrollbar-track-color-active: rgb(250 250 256 / 25%);
+
+    .scroll-maker {
+      // background: linear-gradient(to bottom right, #eef6ff, #db7b5e);
+      background: #11ccb8 linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent) 0 0 / 50px 50px;
+    }
+  }
+
+  &.theme-dark {
+    --text-color: #E0F0FF;
+    --border-color: rgb(102 108 145 / 65%);
+    ---top-head-bg: #091147;
+    ---left-head-bg: #141b4e;
+    --row-odd-bg: #27335b;
+    --row-even-bg: #3b4268;
+    --scrollbar-thumb-color: #cad3de;
+  }
+
+  &.theme-gray {
+    --text-color: #666;
+    --border-color: #ccc;
+    ---top-head-bg: #EEEEEE;
+    ---left-head-bg: #EEEEEE;
+    --row-odd-bg: #F5F5F5;
+    --row-even-bg: #FAFAFA;
+    --scrollbar-thumb-color: #b2b3b4;
+  }
+
+  &.theme-green {
+    --text-color: #2c553d;
+    --border-color: rgb(76 172 175 / 65%);
+    ---top-head-bg: #9ee0c4;
+    ---left-head-bg: #c4ecd5;
+    --row-odd-bg: #e0f7e9;
+    --row-even-bg: rgba(139, 237, 176, 0.15);
+    --scrollbar-thumb-color: #226653;
+  }
+
+  /* AI 给的配色 */
+  &.theme-AI-green {
+    --text-color: #333333;
+    --border-color: #91f1c5;
+    ---top-head-bg: #66CC99;
+    ---left-head-bg: #66CC99;
+    --row-odd-bg: #E1FFD1;
+    --row-even-bg: #CCFFCC;
+    --scrollbar-thumb-color: #226653;
+  }
+
+  &.theme-AI-red {
+    --text-color: #CCCCCC;
+    --border-color: #8B0000;
+    ---top-head-bg: #660000;
+    ---left-head-bg: #660000;
+    --row-odd-bg: #800000;
+    --row-even-bg: #990000;
+    --scrollbar-thumb-color: #660000;
+
+    .t-cell::selection {
+      color: #fff;
+      background-color: #ce2c2c;
+    }
+  }
+
+  &.theme-red {
+    --text-color: #CCCCCC;
+    --border-color: #993232;
+    ---top-head-bg: #831919;
+    ---left-head-bg: #831919;
+    --row-odd-bg: #b83a3a;
+    --row-even-bg: #aa2323;
+    --scrollbar-thumb-color: #660000;
+  }
+
+  &.theme-AI-pink {
+    --text-color: #333333;
+    --border-color: #FFC0CB;
+    ---top-head-bg: #FFB6C1;
+    ---left-head-bg: #FFD1DC;
+    --row-odd-bg: #FFD6E5;
+    --row-even-bg: #FFE6EE;
+    --scrollbar-thumb-color: #660000;
+  }
+
+  &.theme-AI-orange {
+    --text-color: #333333;
+    --border-color: #CCC;
+    ---top-head-bg: #FFD280;
+    ---left-head-bg: #FFE6B3;
+    --row-odd-bg: #FFEAB3;
+    --row-even-bg: #FFF7CC;
+    --scrollbar-thumb-color: #FFA500;
+    --scrollbar-track-color: rgba(255, 218, 185, 0.35);
+    --scrollbar-track-color-active: rgba(255, 218, 185, 0.65);
+  }
+
+  .scroll-maker {
+    position: absolute;
+  }
+
+  .head-scroll {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .scroll-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 1;
+
+    &.scrolled {
+      box-shadow: 6px 0 12px rgba(64, 64, 64, 0.15);
+    }
+  }
+
+  // &::part(container) {
+
+  // }
+
+  &__fixed {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__head {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 1;
+    /* add support for box-shadow */
+  }
+
+  &__left {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    // &.scrolled {
+    //   box-shadow: 6px 0 12px rgba(64, 64, 64, 0.15);
+    // }
+  }
+
+  &__corner {
+    position: absolute;
+    height: 100%;
+  }
+
+  &__body {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .t-cell {
+    padding: 8px;
+    box-sizing: border-box;
+    border-right: 1px solid var(--border-color, #E9E9E9);
+    border-bottom: 1px solid var(--border-color, #E9E9E9);
+    // background-clip: padding-box!important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &.row-end {
+      border-right: none;
+    }
+
+    &.odd {
+      background: var(--row-odd-bg, #FAFAFA);
+    }
+
+    &.even {
+      background: var(--row-even-bg, #FFF);
+    }
+
+    &.x-header {
+      font-weight: 600;
+      background: var(---left-head-bg, #F5F5F5);
+    }
+
+    &.y-header {
+      font-weight: 600;
+      background: var(---top-head-bg, #F5F5F5);
+    }
+  }
+
+  &.resizable {
+    .t-cell.y-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -2px;
+      bottom: 0;
+      width: 3px;
+      cursor: ew-resize;
+    }
+  }
+
+  .column-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: rgba(64, 144, 240, 0.65);
+    cursor: ew-resize;
+    z-index: 2;
+  }
+}
+
+
+.x-table {
+  // NOTE! 指定多个背景层时，使用逗号分隔每个背景层，并且<background-color>只能被包含在最后一层
+  // --area-bg: linear-gradient(45deg, #c1f46e 26%, transparent 0, transparent 75%, #c0e730 0) 0 0 / 30px 30px, fixed linear-gradient(45deg, #cfe886 26%, transparent 0, transparent 75%, #98db50 0) 15px 15px / 30px 30px, #dff04dc7;
+  // --area-bg: linear-gradient(-45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent) 0 0 / 50px 50px, #11ccb8;
+}
+
+.x-table__corner,
+.x-table__head>div,
+.x-table__row-head>div,
+.x-table__body>div {
+  background: var(--area-bg, transparent);
+}

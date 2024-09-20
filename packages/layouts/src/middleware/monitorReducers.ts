@@ -1,0 +1,24 @@
+import { CombinedState, Reducer, StoreCreator, StoreEnhancer } from 'redux'
+
+const round = (n: number) => Math.round(n * 100) / 100
+
+const monitorReducerEnhancer = (createStore: StoreCreator) => (
+  reducer: Reducer,
+  initialState: CombinedState<any>,
+  enhancer: StoreEnhancer,
+) => {
+  const monitoredReducer = (state: any, action: any) => {
+    const start = performance.now()
+    const newState = reducer(state, action)
+    const end = performance.now()
+    const diff = round(end - start)
+
+    console.log('reducer process time:', diff)
+
+    return newState
+  }
+
+  return createStore(monitoredReducer, initialState, enhancer)
+}
+
+export default monitorReducerEnhancer

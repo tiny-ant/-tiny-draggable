@@ -1,0 +1,112 @@
+.resizer-rect {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  border: 1px solid currentColor;
+  /* box-sizing: content-box; */
+  color: dodgerblue;
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 2;
+  --width: 7px;
+  --length: 7px;
+  --offset: -4px;
+
+
+  &.dragging .rz-point {
+    visibility: hidden;
+  }
+
+  .rz-point {
+    position: absolute;
+    width: var(--width);
+    height: var(--width);
+    margin: auto;
+    background-color: white;
+    pointer-events: all;
+  }
+
+  .rz-l {
+    top: 0;
+    left: var(--offset);
+    bottom: 0;
+    height: 100%;
+    cursor: ew-resize;
+  }
+
+  .rz-r {
+    top: 0;
+    right: var(--offset);
+    bottom: 0;
+    height: 100%;
+    cursor: ew-resize;
+  }
+
+  .rz-t {
+    top: var(--offset);
+    left: 0;
+    right: 0;
+    width: 100%;
+    cursor: ns-resize;
+  }
+
+  .rz-b {
+    bottom: var(--offset);
+    left: 0;
+    right: 0;
+    width: 100%;
+    cursor: ns-resize;
+  }
+
+  .rz-t,
+  .rz-r,
+  .rz-b,
+  .rz-l {
+    background-color: transparent;
+  }
+
+  .rz-bl,
+  .rz-tr,
+  .rz-br,
+  .rz-tl {
+    width: var(--length);
+    height: var(--length);
+    border: 1px solid currentColor;
+  }
+
+  .rz-tl {
+    top: var(--offset);
+    left: var(--offset);
+    cursor: nw-resize;
+  }
+
+  .rz-br {
+    bottom: var(--offset);
+    right: var(--offset);
+    cursor: se-resize;
+  }
+
+  .rz-tr {
+    top: var(--offset);
+    right: var(--offset);
+    cursor: ne-resize;
+  }
+
+  .rz-bl {
+    bottom: var(--offset);
+    left: var(--offset);
+    cursor: sw-resize;
+  }
+
+  .size-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 8px;
+    font-size: 12px;
+    line-height: 20px;
+    background-color: rgba(0, 255, 255, 0.35);
+  }
+}

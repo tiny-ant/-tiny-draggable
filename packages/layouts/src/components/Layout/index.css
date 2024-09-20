@@ -1,0 +1,11 @@
+
+.lnk-layout {
+  flex: auto;
+  display: flex;
+  height: 100%;
+  /* width: 100%; */
+
+  & .lnk-layout-header {
+    height: 64px;
+  }
+}

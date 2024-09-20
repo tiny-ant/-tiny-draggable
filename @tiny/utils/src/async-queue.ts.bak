@@ -1,0 +1,100 @@
+// 用来执行异步并发时，用于异步队列的控制
+import EventBus from './event-bus';
+
+function asyncTemp() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(1);
+    });
+  });
+}
+
+class AsyncQueue {
+  // 执行队列
+  excutingQueue = [];
+
+  // 等待队列
+  waitingQueue = [];
+
+  // 执行队列最大值
+  max = 3;
+
+  // isExcuting = false
+
+  static pinstance: AsyncQueue;
+
+  constructor(max = 3) {
+    this.max = max;
+  }
+
+  setQueueMax(max) {
+    this.max = max;
+  }
+
+  addQueue(queId: string, fn: (...args) => any, ...args: any[]) {
+    if (typeof queId !== 'string') {
+      throw new Error('queueId should be string');
+    }
+    if (typeof fn !== 'function') {
+      throw new Error('fn should be function');
+    }
+    if (this.excutingQueue.length >= this.max) {
+      this.waitingQueue.push({ queId, fn, args, status: 'pending' });
+    } else {
+      this.excutingQueue.push({ queId, fn, args, status: 'pending' });
+    }
+    EventBus.on(queId, this.excuting, true);
+    this.run({ queId });
+  }
+
+  //
+  excuting = ({ fn, args, queId, status }) => {
+    try {
+      asyncTemp().then(async () => {
+        if (status === 'pending') {
+          try {
+            await fn(...args);
+          } catch (e) {
+            console.warn(`${queId}task 执行失败`);
+          }
+          const excutingIndex = this.excutingQueue.findIndex(item => item.queId === queId);
+          if (excutingIndex >= 0) {
+            this.excutingQueue[excutingIndex].status = 'fullfilled';
+            this.excutingQueue.splice(excutingIndex, 1);
+          }
+          EventBus.off(queId, this.excuting);
+          if (this.waitingQueue.length > 0) {
+            const waitingTask = this.waitingQueue.shift();
+            this.excutingQueue.push(waitingTask);
+            EventBus.emit(waitingTask.queId, waitingTask);
+          }
+        }
+      });
+    } catch (e) {
+      console.warn(`${queId} task执行失败`);
+    }
+  };
+
+  cancelAllQueue() {
+    this.excutingQueue = [];
+    this.waitingQueue = [];
+  }
+
+  run(task) {
+    const excutingIndex = this.excutingQueue.findIndex(item => item.queId === task.queId);
+    // console.log(this.excutingQueue, this.waitingQueue, excutingIndex)
+    if (excutingIndex >= 0) {
+      this.excuting(this.excutingQueue[excutingIndex]);
+    }
+  }
+
+  // 全局用单例
+  static get instance() {
+    if (!this.pinstance) {
+      this.pinstance = new AsyncQueue();
+    }
+    return this.pinstance;
+  }
+}
+
+export default AsyncQueue;

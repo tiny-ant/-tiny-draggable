@@ -1,0 +1,102 @@
+.config-group {
+  margin-bottom: -1px;
+  box-sizing: content-box;
+  color: var(--font-color-secondary);
+  background-color: var(--bg-base);
+
+  &.open {
+    border-bottom: 5px solid var(--bg-layout);
+  }
+
+  &:last-child {
+    border-bottom: 0;
+
+    &.close {
+      .chart-config-group__title:after {
+        border-top: 0;
+      }
+    }
+  }
+
+  &__title {
+    position: relative;
+    display: flex;
+    padding: 0 5px 0 10px;
+    height: 35px;
+    border-top: 1px solid var(--border-color-default);
+    border-bottom: 1px solid var(--border-color-default);
+    line-height: 34px;
+    font-size: 12px;
+    color: var(--font-color-secondary);
+    background-color: var(--bg-nav);
+    white-space: nowrap;
+    // cursor: pointer;
+    user-select: none;
+
+    .icon-box {
+      float: right;
+      width: 26px;
+      height: 100%;
+      line-height: 30px;
+      text-align: center;
+      color: var(--font-color-secondary);
+
+      .svg-icon {
+        transition: all 0.3s;
+
+        &.unfold {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    .title-label {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      font-weight: 600;
+    }
+
+    .custom-switch.ant4-switch-small {
+      margin-top: 13px;
+    }
+  }
+
+  &__body {
+    position: relative;
+    margin: 8px 0;
+    padding: 0 10px;
+    font-size: 12px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  // help utils
+  .config-sep {
+    margin-top: 12px;
+    border-top: 1px solid var(--border-color-default);
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+
+  .sub-title {
+    padding: 10px 0;
+    color: var(--font-color-dark);
+  }
+
+  .input-row {
+    margin-bottom: 12px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 24px;
+  }
+}

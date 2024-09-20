@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2015.Proxy", "ESNext"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+      "ink": ["../ink/components/index"],
+      // "*": ["packages", "@tiny"],
+    },
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    // "plugins": ["typescript-workspace-plugin"],
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx"],
+}

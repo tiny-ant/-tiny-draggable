@@ -1,0 +1,211 @@
+import React from 'react';
+import { message, Modal, Icon, Checkbox, Radio, Select, Input } from 'antd4';
+import { T, Trans } from 'common/i18n';
+
+export default function F({ dashboardIndex = 0, lostParam }) {
+  const tipText = '提示';
+  const totalsText = '共1条';
+  const nameTips = `说明：当前指标${tipText}别名编辑后，会自动应用于当前图表所有指标字段下的${totalsText}别名`;
+  const rules = [
+    {
+      required: true,
+      message: `请选择\`${tipText}\`的类型`,
+    },
+    {
+      pattern: /^[^'"<>\\/]+$/,
+      message: '姓名不能包含以下特殊字符：\'"<>/',
+    },
+    {
+      pattern: /^[^'"<>\\/]+$/,
+      message: `密码不能包含以下${tipText}特殊字符：\'\`"<>/`,
+    },
+  ];
+  const msg = [`请, 选择\`${tipText}\\`, `类型（${p.getSize(true)}）`];
+  const values = [
+    {
+      text1: `实际结束时间：${timeToFormatStr(model.endTime)}`,
+      text2: `实际结束时间：${JSON.stringify(model.endTime)}`,
+      text3: `实际结束时间：${getEndTimeOfFormat(endTime)}`,
+      text4: `实际结束时间：${model.getEndTime(idx)}`,
+      text5: `实际结束时间：${model.getEndTime(names[idx])}`,
+      SLA: '任务到业务时间后， 超过$$分钟还没运行结束，触发告警。',
+    },
+  ];
+  const result = { rows: [''] };
+  let errMsg = '';
+
+  result.queueStatus = `请稍候，当前有${item + 1}个人在排队`;
+
+  if (result.rows[0].startsWith('总计')) {
+    errMsg = `未找到指定的仪表盘（dashboardIndex=${dashboardIndex}）`;
+    throw Error(`ERROR：SQL参数"${lostParam.name}"丢失，无法进行图表查询`);
+  } else {
+    // `(?:.*) =>
+    errMsg = `图表\`${layoutConfig.drawChartList[chartIndex]}\`配置失效，原因未明，请删除后重新制作新的图表再添加到仪表盘。`;
+    errMsg = moment(timeStr, 'HH:mm:ss').format('H小时m分钟');
+  }
+  message.success('实例强制成功！');
+  modal.confirm({
+    title: `确定${isChecked ? '开启' : '关闭'}此报表的订阅下载？`,
+  });
+
+  return (
+    <div>
+      <Modal
+        centered
+        title={`${isEdit ? '编辑' : '添加'}同环比分析`}
+        visible
+        placeholder={`请输入${item.indexType === '1' ? '维度' : '指标'}名称`}
+        disabledTips={`${option.type === 'TEXT' ? T('字符串') : T('日期')}类型无法设置数据格式`}
+      >
+        {[
+          a ? `${text} + ${arr[rows[0].col] + 3}` : '失败',
+          a ? b() + err.show(`年龄${age}*3`) : '是',
+          a ? b + c : '成功',
+        ]}
+        移动端仅作为报表展示，无法进行报表修改，查看更多详情或修改报表请至PC端操作。PC端地址：https
+      </Modal>
+      <Trans i18nKey="xxx">
+        报表 “<span className="source-workbook">{node.title}</span>” 的草稿
+      </Trans>
+      <Trans>你好 {name}.</Trans>
+      <Trans i18nKey="userMessagesUnread" count={count}>
+        你好 <strong title={t('nameTitle')}>{name}</strong>, 你有{count}封未读邮件。
+        <Link to="/msgs">查看邮件</Link>.
+      </Trans>
+      <p className="upload-tip">
+        1、请选择 .xlsx/.xls 格式的文件 ；
+        <br />
+        2、上传将默认使用第一个Sheet ；
+        <br />
+        3、表头必须放在Sheet1的第一行， <br />
+        &ensp;&emsp;且不能有空单元格和合并单元格 ；
+        <br />
+        4、单个文件大小不得超过30M 。
+      </p>
+      <p>仅记忆前{topLimit}项自定义排序顺序 &nbsp; </p>
+      <p>{topLimit}项之后内容按照系统默认顺序显示。</p>
+      <div className="topN__max">最大可输入值为：{max}</div>
+      <div className="data-formatter-label">
+        小数位数
+        {showMaxDecimalMsg && <span style={{ color: '#f5222d' }}>(最大{maxDecimal}位)</span>}
+      </div>
+      <Checkbox checked={ifShowAxis} onChange={onCheckboxChange} disabled={disabledCheckbox}>
+        {axisNameLabel}名称
+      </Checkbox>
+      <span title={`过滤条件 - ${widgetField?.rename || ''}`}>
+        不支持/\?*[]'符号，且不能以【单引号、空格】开头或结尾
+      </span>
+      <div className="date-group__header__title">
+        共{groups.length}项，已选择{' '}
+        <span className="date-group__selected-count">{selectedRowKeys.length}</span> {T('项')}
+      </div>
+      <br />
+      MapTypeConfig 验证
+      <select
+        defaultValue="文本"
+        title="书写格式：{name}=xxx"
+        placeholder={`请输入 应用名称 / 应用管理员 / ${__POWERED_BY_SF__ ? T('工号') : T('账号')}`}
+      >
+        <option key="文本" value="文本">
+          文本
+        </option>
+        <option key="数字" value="数字">
+          数字
+        </option>
+        <option key="日期" value="日期">
+          日期
+        </option>
+      </select>
+      <span
+        title={`请选择当前图表需要联动的字段，和需要建立关联的${
+          tipText === 'dataset' ? '数据集字段' : '参数名'
+        }`}
+      >
+        <span>已导入{msg.length}条:</span>
+        <span className="vam">权限仅剩{item.leftDays}天，即将到期</span>
+      </span>
+      <span
+        title={
+          tipText
+            ? '示例：1.2.3.4:9200，如果有多个使用分号进行分隔。'
+            : '输入服务器IP/域名地址（不支持数据库连接地址），例如：127.0.0.1 或者 db.server.com'
+        }
+      >
+        + 查询条件
+      </span>
+      <div className="orgRight__explain">
+        若您需要某张报表的&quot;新组织关系权限&quot;（如大区/区部/分部/点部等），用来查看报表更多的数据，请到报表查看页面，使用页面上方的【申请额外权限】功能。
+        <br />
+        结束。
+      </div>
+      <div
+        className="process-setting-content"
+        title={`${T('设置固定值可选项')}${titleName?.length && `（${titleName}）`}`}
+      >
+        <div>请点击这里&gt;&gt;</div>
+        <div className="process-setting-tips">
+          1、目前仅支持设置报表、数据集发布审批流程的节点，且流程中的【业务负责人】【空间管理员】2个节点仅支持全部开启或全部关闭，不可只关闭或开启其中一个节点。
+          <br />
+          2、审批流程中的节点若为勾选（
+          <button checked style={{ pointerEvents: 'none' }} />
+          ）状态，则表示需要此节点审批，若为未勾选（
+          <button style={{ pointerEvents: 'none' }} />
+          ）状态，则审批时不需要此节点审批；
+          <button checked>按钮</button>
+          3、审批设置保存后，只作用于本空间内报表、数据集发布流程的审批。
+        </div>
+        <br />
+        3、表头必须放在Sheet1的第一行， <br />
+        &ensp;&emsp;且不能有$$空单元格和合并单元格 ；
+        <br />
+        <div className="password-rule__text">
+          <Icon
+            className={!rules.rule0 ? 'password-rule__error' : 'password-rule__correct'}
+            type={rules.rule0 ? 'check-circle' : 'close-circle'}
+          />
+          8-16个字符，密码不能与登录账号/原始密码相同
+        </div>
+      </div>
+      <p
+        className="aaa"
+        data-tip={`字段数据过滤 (${sourceField?.rename})`}
+        title={
+          <>
+            说&emsp;&emsp;明：
+            <br />
+            外部链接URL支持GET方式的参数传递，仅支持传递查看者的工号信息。
+            <br />
+            使用示例：http://path/to/url?xxx=&lt;#userId#&gt;
+            <br />
+            （其中，xxx为自定义的目标参数名称，userId固定不可修改，代表用户id）
+            <br />
+            {/* <span style={{ margin: '0 8px' }}>（已选择{selectedRowKeys.length}项）</span> */}
+          </>
+        }
+      />
+    </div>
+  );
+}
+
+export const ModelEmpty = (
+  <Empty
+    description={
+      userData.config.dataMarketUrl === '/data-market/home' ? (
+        <>
+          暂无数据，进入
+          <a
+            className="fetch-list-empty-link"
+            onClick={() => openMarketList({ tab: 'publicmodel' })}
+          >
+            数据市场-公共模型
+          </a>
+          ，进行申请
+        </>
+      ) : (
+        '暂无数据'
+      )
+    }
+    image="img/nodata.png"
+  />
+);

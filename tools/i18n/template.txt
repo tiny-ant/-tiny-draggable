@@ -1,0 +1,56 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import resources from './locales';
+
+// 重新定义类型，修复t函数返回类型可能为null导致的类型兼容问题
+declare module 'i18next' {
+  interface CustomTypeOptions {
+    ns: ['translation', 'user'];
+    defaultNS: 'translation';
+    returnNull: false;
+    resources: typeof resources['en'];
+  }
+}
+
+// 支持URL参数`lng`指定语言代码
+const queryLng = ((location.hash.split('?')[1] || '').match(/(?:&|\?)lng=(\w+)(?=&|$)/i) ||
+  [])[1];
+
+i18n
+  // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
+  // learn more: https://github.com/i18next/i18next-http-backend
+  // .use(Backend)
+  // bind react-i18next to the instance
+  // https://react.i18next.com/latest/i18next-instance
+  .use(initReactI18next)
+  // init i18next
+  // for all options read: https://www.i18next.com/overview/configuration-options
+  .init({
+    fallbackLng: 'zh',
+    // if you're using a language detector, do not define the lng option
+    lng: localStorage.getItem('i18nextLng') || queryLng || undefined,
+    // debug: true,
+    returnNull: false,
+    resources,
+    ns: ['translation', 'user'],
+    defaultNS: 'translation',
+    interpolation: {
+      defaultVariables: {
+        // add global interpolation variables here.
+      },
+      escapeValue: false, // not needed for react as it escapes by default
+      prefix: '{',
+      suffix: '}',
+    },
+    // missingInterpolationHandler: () => '',
+  });
+
+i18n.services.formatter?.add('lowercase', (value, lng, options) => {
+  return value.toLowerCase();
+});
+
+globalThis.i18n = i18n;
+
+export default i18n;
+
+export const T = i18n.t;
